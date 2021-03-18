@@ -12,14 +12,14 @@ namespace ISO20022HackathonTranslatorTests
             // Arrange
             var paymentMessage = new PaymentMessage
             {
-                Id = "Message ID 123"
+                MessageId = "Message ID 123"
             };
 
             // Act
             var mxMessage = MxMessageMapper.ToMxMessage(paymentMessage);
 
             // Assert
-            Assert.Equal(paymentMessage.Id, mxMessage.FIToFICstmrCdtTrf.GrpHdr.MsgId);
+            Assert.Equal(paymentMessage.MessageId, mxMessage.FIToFICstmrCdtTrf.GrpHdr.MsgId);
         }
     }
 }
