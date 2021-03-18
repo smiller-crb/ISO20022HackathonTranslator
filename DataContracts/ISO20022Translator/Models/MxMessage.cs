@@ -1,4 +1,6 @@
-﻿namespace ISO20022HackathonTranslator.Models.Mx00800102
+﻿using System;
+
+namespace ISO20022HackathonTranslator.Models.Mx00800102
 {
     public class Document
     {
@@ -17,7 +19,7 @@
         public string MsgId { get; set; }
         public string CreDtTm { get; set; }
         public int NbOfTxs { get; set; }
-        public double TtlIntrBkSttlmAmt { get; set; }
+        public decimal TtlIntrBkSttlmAmt { get; set; }
         public string Ccy { get; set; }
         public string IntrBkSttlmDt { get; set; }
 
@@ -26,13 +28,18 @@
         public Agent InstgAgt { get; set; }
 
         public Agent InstdAgt { get; set; }
+
+        public static implicit operator GroupHeader(GroupHeader v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CreditTransferTransactionInformation
     {
         public PaymentId PmtId { get; set; }
         public PaymentTypeInformation PmtTpInf { get; set; }
-        public string IntrBkSttlmAmt { get; set; }
+        public decimal IntrBkSttlmAmt { get; set; }
         public string ChrgBr { get; set; }
         public Party Dbtr { get; set; }
         public PartyAccount DbtrAcct { get; set; }
