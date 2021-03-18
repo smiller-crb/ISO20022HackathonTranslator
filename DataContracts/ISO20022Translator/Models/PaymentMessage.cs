@@ -4,6 +4,7 @@ namespace ISO20022HackathonTranslator.Models
 {
     public class PaymentMessage
     {
+        public string Id { get; set; }
         public string Initiator { get; set; }                             // - REQUIRED Initiator ID. This is the Initiator sent in the CosPartnerConfiguration  
         //removed correlationId and batch fields
         public Rail Rail { get; set; }                                    // - REQUIRED Payment rail (enum: Internal / XPay / ACH / Wire)

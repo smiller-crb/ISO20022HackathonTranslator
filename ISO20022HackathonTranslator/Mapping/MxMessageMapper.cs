@@ -1,16 +1,28 @@
 ﻿using ISO20022HackathonTranslator.Models;
+using ISO20022HackathonTranslator.Models.Mx00800102;
 using System;
 
 namespace ISO20022HackathonTranslator.Mapping
 {
     public static class MxMessageMapper
     {
-        public static MxMessage ToMxMessage(PaymentMessage message)
+        public static Document ToMxMessage(PaymentMessage message)
         {
-            throw new NotImplementedException();
+            var mxMessage = new Document
+            {
+                FIToFICstmrCdtTrf =new Transaction
+                {
+                    GrpHdr = new GroupHeader
+                    {
+                        MsgId = message.Id
+                    }
+                }
+            };
+
+            return mxMessage;
         }
 
-        public static PaymentMessage ToPaymentMessage(MxMessage mxMessage)
+        public static PaymentMessage ToPaymentMessage(Document mxMessage)
         {
             throw new NotImplementedException();
         }
