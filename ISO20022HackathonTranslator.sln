@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContracts", "DataContra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO20022HackathonTranslatorTests", "ISO20022HackathonTranslatorTests\ISO20022HackathonTranslatorTests.csproj", "{878A6428-D30F-4EA4-B84A-277C9A0D91CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTParser", "MTParser\MTParser.csproj", "{BF722FCF-3C58-4287-AA5A-C8F3DEA477D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{3A7DA5EC-575B-4AD5-A3D4-EC1173722041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A7DA5EC-575B-4AD5-A3D4-EC1173722041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7DA5EC-575B-4AD5-A3D4-EC1173722041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF722FCF-3C58-4287-AA5A-C8F3DEA477D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF722FCF-3C58-4287-AA5A-C8F3DEA477D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF722FCF-3C58-4287-AA5A-C8F3DEA477D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF722FCF-3C58-4287-AA5A-C8F3DEA477D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DAB35741-4382-4683-A3F6-EF94881F1015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAB35741-4382-4683-A3F6-EF94881F1015}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAB35741-4382-4683-A3F6-EF94881F1015}.Release|Any CPU.ActiveCfg = Release|Any CPU
