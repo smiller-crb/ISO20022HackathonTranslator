@@ -1,7 +1,9 @@
 using ISO20022HackathonTranslator.Models.Mx00800102;
 using ISO20022HackathonTranslator.Translator;
+
 using System.IO;
 using System.Xml.Serialization;
+
 using Xunit;
 
 namespace ISO20022HackathonTranslatorTests
@@ -17,125 +19,125 @@ namespace ISO20022HackathonTranslatorTests
             {
                 FIToFICstmrCdtTrf = new Transaction
                 {
-                    GrpHdr = new GroupHeader
-                    {
-                        MsgId = "Message Id 123",
-                        CreDtTm = "2019-12-23T09:40:13",
-                        NbOfTxs = 1,
-                        TtlIntrBkSttlmAmt = 1,
-                        IntrBkSttlmDt = "2019-12-23",
-                        SttlmInf = new SettlementInformation
-                        {
-                            SttlmMtd = "CLRG",
-                            ClrSys = new ClrSys
-                            {
-                                Prtry = "ST2"
-                            }
-                        },
-                        InstgAgt = new Agent
-                        {
-                            FinInstnId = new FinancialInstitutionId
-                            {
-                                BIC = "INGSMMXXX"
-                            }
-                        },
-                        InstdAgt = new Agent
-                        {
-                            FinInstnId = new FinancialInstitutionId
-                            {
-                                BIC = "BTRLRO22"
-                            }
-                        }
-                    },
-                    CdtTrfTxInf = new CreditTransferTransactionInformation[]
-                    {
-                        new CreditTransferTransactionInformation
-                        {
-                            PmtId = new PaymentId
-                            {
-                                InstrId = "PaymentID",
-                                EndToEndId = "PaymentID",
-                                TxId = "PaymentID"
-                            },
-                            PmtTpInf = new PaymentTypeInformation
-                            {
-                                SvcLvl = new ServiceLevel
-                                {
-                                    Cd = "SEPA"
-                                }
-                            },
-                            IntrBkSttlmAmt = "1",
-                            ChrgBr = "SLEV",
-                            Dbtr = new Party
-                            {
-                                Nm = "Jane Doe",
-                                PstlAdr = new PostalAddress
-                                {
-                                    Ctry = "ES"
-                                },
-                                Id = new PartyId
-                                {
-                                    OrgId = new OrganizationId
-                                    {
-                                        Othr = new OtherOrgId
-                                        {
-                                            Id = "GFA"
-                                        }
-                                    }
-                                }
-                            },
-                            DbtrAcct = new PartyAccount
-                            {
-                                Id = new PartyAccountId
-                                {
-                                    IBAN = "RO10INGBCBN4EVKBNFJ8YNGT"
-                                }
-                            },
-                            DbtrAgt = new PartyAgent
-                            {
-                                FinInstnId = new FinancialInstitutionId
-                                {
-                                    BIC = "CECAESMMXXX"
-                                }
-                            },
-                            CdtrAgt = new PartyAgent
-                            {
-                                FinInstnId = new FinancialInstitutionId
-                                {
-                                    BIC = "BTRLRO22"
-                                }
-                            },
-                            Cdtr = new Party
-                            {
-                                Nm = "John Doe",
-                                PstlAdr = new PostalAddress
-                                {
-                                    Ctry = "ES"
-                                },
-                                Id = new PartyId
-                                {
-                                    OrgId = new OrganizationId
-                                    {
-                                        Othr = new OtherOrgId
-                                        {
-                                            Id = "V94025590"
-                                        }
-                                    }
-                                }
-                            },
-                            CdtrAcct = new PartyAccount
-                            {
-                                Id = new PartyAccountId
-                                {
-                                    IBAN = "RO71BTRLV67M9G4XI3IEJ5D2"
-                                }
-                            },
-                            RmtInf = new RemittanceInformation
-                            {
-                                Ustrd = "Incoming Payment"
-                            }
-                        }
-                    }
+                GrpHdr = new GroupHeader
+                {
+                MsgId = "Message Id 123",
+                CreDtTm = "2019-12-23T09:40:13",
+                NbOfTxs = 1,
+                TtlIntrBkSttlmAmt = 1,
+                IntrBkSttlmDt = "2019-12-23",
+                SttlmInf = new SettlementInformation
+                {
+                SttlmMtd = "CLRG",
+                ClrSys = new ClrSys
+                {
+                Prtry = "ST2"
+                }
+                },
+                InstgAgt = new Agent
+                {
+                FinInstnId = new FinancialInstitutionId
+                {
+                BIC = "INGSMMXXX"
+                }
+                },
+                InstdAgt = new Agent
+                {
+                FinInstnId = new FinancialInstitutionId
+                {
+                BIC = "BTRLRO22"
+                }
+                }
+                },
+                CdtTrfTxInf = new CreditTransferTransactionInformation[]
+                {
+                new CreditTransferTransactionInformation
+                {
+                PmtId = new PaymentId
+                {
+                InstrId = "PaymentID",
+                EndToEndId = "PaymentID",
+                TxId = "PaymentID"
+                },
+                PmtTpInf = new PaymentTypeInformation
+                {
+                SvcLvl = new ServiceLevel
+                {
+                Cd = "SEPA"
+                }
+                },
+                IntrBkSttlmAmt = 1,
+                ChrgBr = "SLEV",
+                Dbtr = new Party
+                {
+                Nm = "Jane Doe",
+                PstlAdr = new PostalAddress
+                {
+                Ctry = "ES"
+                },
+                Id = new PartyId
+                {
+                OrgId = new OrganizationId
+                {
+                Othr = new OtherOrgId
+                {
+                Id = "GFA"
+                }
+                }
+                }
+                },
+                DbtrAcct = new PartyAccount
+                {
+                Id = new PartyAccountId
+                {
+                IBAN = "RO10INGBCBN4EVKBNFJ8YNGT"
+                }
+                },
+                DbtrAgt = new PartyAgent
+                {
+                FinInstnId = new FinancialInstitutionId
+                {
+                BIC = "CECAESMMXXX"
+                }
+                },
+                CdtrAgt = new PartyAgent
+                {
+                FinInstnId = new FinancialInstitutionId
+                {
+                BIC = "BTRLRO22"
+                }
+                },
+                Cdtr = new Party
+                {
+                Nm = "John Doe",
+                PstlAdr = new PostalAddress
+                {
+                Ctry = "ES"
+                },
+                Id = new PartyId
+                {
+                OrgId = new OrganizationId
+                {
+                Othr = new OtherOrgId
+                {
+                Id = "V94025590"
+                }
+                }
+                }
+                },
+                CdtrAcct = new PartyAccount
+                {
+                Id = new PartyAccountId
+                {
+                IBAN = "RO71BTRLV67M9G4XI3IEJ5D2"
+                }
+                },
+                RmtInf = new RemittanceInformation
+                {
+                Ustrd = "Incoming Payment"
+                }
+                }
+                }
                 }
             };
 
@@ -145,7 +147,7 @@ namespace ISO20022HackathonTranslatorTests
             // Assert
             using var sr = new StreamReader(mxXmlFilePath);
             var xs = new XmlSerializer(typeof(Document));
-            var readMxMessage = (Document)xs.Deserialize(sr);
+            var readMxMessage = (Document) xs.Deserialize(sr);
 
             Assert.Equal(mxMessage.FIToFICstmrCdtTrf.GrpHdr.MsgId, readMxMessage.FIToFICstmrCdtTrf.GrpHdr.MsgId);
             Assert.Equal(mxMessage.FIToFICstmrCdtTrf.GrpHdr.CreDtTm, readMxMessage.FIToFICstmrCdtTrf.GrpHdr.CreDtTm);

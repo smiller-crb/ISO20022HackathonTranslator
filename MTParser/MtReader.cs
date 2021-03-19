@@ -1,6 +1,7 @@
 using ISO20022HackathonTranslator.Models;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -95,6 +96,7 @@ namespace ISO20022HackathonTranslator.MTParser
         private MtMessageApplicationHeader GetApplicationHeader()
         {
             MtMessageApplicationHeader applicationHeader = new MtMessageApplicationHeader();
+            ReadUntil('}');
             return applicationHeader;
         }
 
@@ -105,6 +107,8 @@ namespace ISO20022HackathonTranslator.MTParser
             while (true)
             {
                 var content = ReadUntil('}');
+                if (content.StartsWith("{"))
+                    content = content.Substring(1);
 
                 if (string.IsNullOrEmpty(content))
                     break;
@@ -148,13 +152,38 @@ namespace ISO20022HackathonTranslator.MTParser
         private MtMessageBody GetBody()
         {
             MtMessageBody messageBody = new MtMessageBody();
-            var label = "";
-            var value = "";
 
-            do
+            var content = ReadUntil('}');
+            string[] linesArray = content.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            Array.Reverse(linesArray);
+            var lines = new Stack<string>(linesArray);
+
+            var label = "";
+            var option = "";
+
+            while (lines.Count > 0)
             {
-                label = ReadUntil(':', '}')?.ToUpper();
-                value = ReadUntil(':', '}');
+                var line = lines.Pop();
+
+                if (line.StartsWith("-"))
+                    continue;
+
+                var valueStart = 0;
+                if (line.StartsWith(":"))
+                {
+                    label = line.Substring(1, 2);
+                    if (line[3] == ':')
+                    {
+                        option = "";
+                        valueStart = 4;
+                    }
+                    else
+                    {
+                        option = line.Substring(3, 1);
+                        valueStart = 5;
+                    }
+                }
+                var value = line.Substring(valueStart);
 
                 if (value == null)
                     continue;
@@ -164,51 +193,53 @@ namespace ISO20022HackathonTranslator.MTParser
                     case "20":
                         messageBody.SenderReference = value;
                         break;
-                    case "13C":
+                    case "13":
                         break;
-                    case "23B":
-                        messageBody.BankOperationCode = value
-                        switch
+                    case "23":
+                        if (option == "B")
                         {
+                            messageBody.BankOperationCode = value
+                            switch
+                            {
                             "CRED" => BankOperationCode.NormalCreditTransfer,
                             "CRTS" => BankOperationCode.TestMessage,
                             "SPAY" => BankOperationCode.SWIFTPay,
                             "SPRI" => BankOperationCode.Priority,
                             "SSTD" => BankOperationCode.Standard,
                             _ => null
-                        };
+                            };
+                        }
                         break;
-                    case "23E":
-                        break;
-                    case "26T":
+                    case "26":
                         messageBody.TransactionTypeCode = value;
                         break;
-                    case "32A":
+                    case "32":
                         messageBody.ValueDate = value.Substring(0, 6);
                         messageBody.SettledCurrency = value.Substring(6, 3);
                         messageBody.InterbankSettledAmount = value.Substring(9);
                         break;
-                    case "33B":
+                    case "33":
                         messageBody.InstructedCurrency = value.Substring(0, 3);
                         messageBody.InstructedAmount = value.Substring(3);
                         break;
                     case "36":
                         messageBody.ExchangeRate = value;
                         break;
-                    case "50F":
-                        messageBody.OrderingCustomer = ParseCustomer(value);
+                    case "50":
+                        messageBody.OrderingCustomer = ParseCustomer(value, option, lines);
                         break;
-                    case "57D":
+                    case "57":
                         messageBody.AccountWithInstitution = value;
                         break;
-                    case "59F":
-                        messageBody.BeneficiaryCustomer = ParseCustomer(value);
+                    case "59":
+                        messageBody.BeneficiaryCustomer = ParseCustomer(value, option, lines);
                         break;
-                    case "71A":
-                        messageBody.DetailsOfCharges = value;
+                    case "71":
+                        if (option == "A")
+                            messageBody.DetailsOfCharges = value;
                         break;
                 }
-            } while (!(label == null && value == null));
+            }
 
             return messageBody;
         }
@@ -216,6 +247,7 @@ namespace ISO20022HackathonTranslator.MTParser
         private MtMessageTrailer GetTrailer()
         {
             MtMessageTrailer trailer = new MtMessageTrailer();
+            ReadUntil('}');
             return trailer;
         }
 
@@ -231,36 +263,50 @@ namespace ISO20022HackathonTranslator.MTParser
                 char character = (char) intValue;
                 if (delimiters.Contains(character))
                     break;
+                stringBuilder.Append(character);
             }
 
             return stringBuilder.ToString();
         }
 
-        private MtCustomer ParseCustomer(string value)
+        private MtCustomer ParseCustomer(string value, string option, Stack<string> lines)
         {
             MtCustomer customer = new MtCustomer();
 
-            string[] lines = value.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            customer.PartyIndentifier = lines[0];
+            customer.PartyIndentifier = value;
             if (customer.PartyIndentifier.StartsWith("/"))
                 customer.PartyIndentifier = customer.PartyIndentifier.Substring(1);
 
-            for (var line = 1; line < lines.Length; line++)
+            while (lines.Count > 0)
             {
-                switch (lines[line].Substring(0, 1))
+
+                var line = lines.Pop();
+
+                if (!(line.StartsWith(":") || line.StartsWith("-")))
                 {
-                    case "1":
-                        customer.Name = lines[line].Substring(2);
-                        break;
-                    case "2":
-                        customer.Address = lines[line].Substring(2);
-                        break;
-                    case "3":
-                        var countryTown = lines[line].Substring(2);
-                        var firstSlash = countryTown.IndexOf('/');
-                        customer.Country = countryTown.Substring(0, firstSlash);
-                        customer.Town = countryTown.Substring(firstSlash + 2);
-                        break;
+                    if (option == "F")
+                    {
+                        switch (line.Substring(0, 1))
+                        {
+                            case "1":
+                                customer.Name = line.Substring(2);
+                                break;
+                            case "2":
+                                customer.Address = line.Substring(2);
+                                break;
+                            case "3":
+                                var countryTown = line.Substring(2);
+                                var firstSlash = countryTown.IndexOf('/');
+                                customer.Country = countryTown.Substring(0, firstSlash);
+                                customer.Town = countryTown.Substring(firstSlash + 2);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    lines.Push(line);
+                    break;
                 }
             }
 

@@ -29,10 +29,10 @@ namespace ISO20022HackathonTranslator.Models.Mx00800102
 
         public Agent InstdAgt { get; set; }
 
-        public static implicit operator GroupHeader(GroupHeader v)
-        {
-            throw new NotImplementedException();
-        }
+        //        public static implicit operator GroupHeader(GroupHeader v)
+        //        {
+        //           throw new NotImplementedException();
+        //       }
     }
 
     public class CreditTransferTransactionInformation

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
+    <ProjectReference Include="..\MTParser\MTParser.csproj" />
   </ItemGroup>
 
 </Project>
