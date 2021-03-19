@@ -12,7 +12,10 @@ namespace ISO20022HackathonTranslator.Mapping
 
         public static PaymentMessage ToPaymentMessage(MtMessage mtMessage)
         {
-            throw new NotImplementedException();
+            return new PaymentMessage
+            {
+                
+            };
         }
     }
 }

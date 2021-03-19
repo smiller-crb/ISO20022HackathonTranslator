@@ -6,7 +6,7 @@ namespace ISO20022HackathonTranslator.Models
     public class PaymentMessage
     {
         public string MessageId { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string SettlementDate { get; set; }
         public string ClearingSystemProprietaryPurpose { get; set; }
         public string SettlementMethod { get; set; }
