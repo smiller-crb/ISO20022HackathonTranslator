@@ -15,9 +15,9 @@ namespace ISO20022HackathonTranslator.Mapping
                     GrpHdr = new GroupHeader
                     {
                         MsgId = message.MessageId,
-                        CreDtTm = message.CreatedDate.ToString(),
+                        CreDtTm = message.CreatedDate?.ToString(),
                         NbOfTxs = 1,
-                        IntrBkSttlmDt = message.SettlementDate.ToString(),
+                        IntrBkSttlmDt = message.SettlementDate?.ToString(),
                         TtlIntrBkSttlmAmt = message.Amount,
                         SttlmInf = new SettlementInformation
                         {

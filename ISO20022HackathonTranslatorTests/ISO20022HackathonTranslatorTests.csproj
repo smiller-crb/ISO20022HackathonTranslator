@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
     <ProjectReference Include="..\ISO20022HackathonTranslator\ISO20022HackathonTranslator.csproj" />
+    <ProjectReference Include="..\MTParser\MTParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>

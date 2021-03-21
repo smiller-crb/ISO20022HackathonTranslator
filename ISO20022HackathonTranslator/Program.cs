@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ISO20022HackathonTranslator.MTParser;
+using ISO20022HackathonTranslator.Translator;
+using System;
 using System.IO;
 using System.Text;
 
@@ -6,9 +8,8 @@ namespace ISO20022HackathonTranslator
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            var testMessage = @"{1:F01SOGEFRPPAXXX0070970817}{2:O1031734150713DEUTDEFFBXXX00739698421607131634N}{3:{103:TGT}{108:OPTUSERREF16CHAR}}{4:
+        private const string mtString = 
+@"{1:F01SOGEFRPPAXXX0070970817}{2:O1031734150713DEUTDEFFBXXX00739698421607131634N}{3:{103:TGT}{108:OPTUSERREF16CHAR}}{4:
 :20:UNIQUEREFOFTRX16
 :23B:CRED
 :32A:180724EUR735927,75
@@ -24,16 +25,20 @@ namespace ISO20022HackathonTranslator
 3/IL/B CITY:71A:SHA
 -}{5:{CHK:D628FE0165A7}}";
 
-            var byteArray = Encoding.ASCII.GetBytes(testMessage);
+        static void Main(string[] args)
+        {
+            var byteArray = Encoding.ASCII.GetBytes(mtString);
 
-            using(var stream = new MemoryStream(byteArray))
-            {
-                using(var parser = new MTParser.MtReader(stream))
-                {
-                    var mt = parser.Parse();
-                    Console.WriteLine($"{mt.Body.InstructedAmount} {mt.Body.InstructedCurrency} sent to {mt.Body.BeneficiaryCustomer.Name}");
-                }
-            }
+            using var stream = new MemoryStream(byteArray);
+            using var reader = new MtReader(stream);
+            var mtMessage = reader.Parse();
+
+            var mxMessage = PaymentMessageTranslator.TranslateToMxMessage(mtMessage);
+
+            var outputFileLocation = "mxMessage.xml";
+            PaymentMessageTranslator.WriteMxFile(mxMessage, outputFileLocation);
+
+            Console.WriteLine($"{mtMessage.Body.InstructedAmount} {mtMessage.Body.InstructedCurrency} sent to {mtMessage.Body.BeneficiaryCustomer.Name}");
         }
     }
 }
